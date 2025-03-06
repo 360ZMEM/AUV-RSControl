@@ -32,7 +32,7 @@
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
-  <link rel="icon" href="./static/images/icon.png">
+  <link rel="icon" href="./static/images/AUVtest.png">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="./static/js/fontawesome.all.min.js"></script>
@@ -52,26 +52,29 @@
           <h1 class="title is-1 publication-title">Never too Prim to Swim: An LLM-Enhanced RL-based Adaptive S-Surface Controller for AUVs under Extre Sea Conditions</h1>
           <div class="is-size-5 publication-authors">
             <span class="author-block">
-              <a href="https://360zmem.github.io/">Guanwen Xie</a>,</span>
+              <a href="https://360zmem.github.io/">Guanwen Xie</a><sup>1</sup>,</span>
             <span class="author-block">
-              <a href="https://2870325142.github.io/MiMi-Xu.github.io/">Jingzehua Xu</a>,</span>
+              <a href="https://2870325142.github.io/MiMi-Xu.github.io/">Jingzehua Xu</a><sup>1</sup>,</span>
             <span class="author-block">
-              <a href="https://github.com/Xiboxtg/">Yimian Ding</a>
+              <a href="https://github.com/Xiboxtg/">Yimian Ding</a><sup>1</sup>,
             </span>
             <span class="author-block">
-              <a href="https://360zmem.github.io/LLM-RSControl">Zhi Zhang</a>
+              <a href="https://360zmem.github.io/LLM-RSControl">Zhi Zhang</a><sup>1</sup>,
             </span>
             <span class="author-block">
-              <a href="https://360zmem.github.io/LLM-RSControl">Shuai Zhang</a>
+              <a href="https://360zmem.github.io/LLM-RSControl">Shuai Zhang</a><sup>2</sup> and 
             </span>
             <span class="author-block">
-              <a href="https://360zmem.github.io/LLM-RSControl">Yi Li</a>
+              <a href="https://360zmem.github.io/LLM-RSControl">Yi Li</a><sup>1</sup>
             </span>
           </div>
 
 
           <div class="is-size-5 publication-authors">
-            <span class="author-block">Tsinghua University</span>
+            <span class="author-block"><sup>1</sup>Tsinghua Shenzhen International Graduate School, Tsinghua University
+            </span>
+            <span class="author-block"><sup>2</sup>Department of Data Science, New Jersey Institute of Technology
+            </span>
 
           </div>
 
@@ -89,7 +92,7 @@
               </span>
               <!-- Code Link. -->
               <span class="link-block">
-                <a href="https://github.com/360ZMEM/AUV-RSControl"
+                <a href="https://github.com/360ZMEM/AUV-RSControl-Code"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fab fa-github"></i>
@@ -116,21 +119,30 @@
 </section>
 
 
-<section class="section" style="text-align: center;" >
-  <img src="./static/images/fig1.png"
-       class="architecture-image"
-       alt="architecture-image image."
-       style="width: 40%; display: block; margin: 0 auto;"/>
-</section>
-
 <section class="section">
   <div class="container is-max-desktop">
     <!-- Abstract. -->
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3">Introduction</h2>
-        <div class="content has-text-justified">
-          <h2 class="title is-3">⚠ UNDER CONSTRUCTION!</h2>
+        <h1 class="title is-2">Introduction</h1>
+        <div class="content has-text-justified is-four-fifths">
+          <img src="./static/images/fig1.png"
+          class="architecture-image"
+          alt="architecture-image image."
+          style="width: 60%; display: block; margin: 0 auto;"/>
+          <p>‎</p>
+          <p>The adaptive control and maneuvering capabilities of Autonomous Underwater Vehicles (AUVs) have drawn significant attention, but achieving precise maneuvering control of AUVs is challenging due to their highly nonlinear dynamics, time-varying hydrodynamics, strong six-degree-of-freedom coupling, and environmental uncertainties. The contributions of this paper mainly include three parts:</p>
+          <ul>
+            <li>
+              We develop a novel AUV controller that employs RL to train an expert-level control strategy for high-level task execution and control command generation, while the S-surface controller produces control signals, ensuring cancellation of nonlinear effects and external disturbances under extreme sea conditions.
+            </li>
+            <li>
+              We utilize LLMs for joint optimization of RL reward function and controller parameters, utilizing multimodal task execution logs and combining contextual information such as environmental descriptions to enhance the final task performance and adaptability.
+            </li>
+            <li>
+              The proposed controller demonstrates superior robust ness and flexibility compared to conventional PID and SMC controllers in challenging marine conditions characterized by waves, currents, and complex terrain. It exhibits exceptional performance in advanced 3D tasks, including underwater target tracking and data collection tasks.
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -140,113 +152,261 @@
 
 <section class="section">
   <div class="container is-max-desktop">
+    
     <!-- Abstract. -->
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3">Methodology</h2>
-        <div class="content has-text-justified">
+        <h1 class="title is-2">Methodology</h1>
+        <div class="content has-text-justified is-four-fifths">
           <p>
-            We propose <em>ERFSL</em>, an efficient reward function searcher using LLMs, which enables LLMs to be effective white-box searchers and highlights their advanced semantic understanding capabilities.
+            The following figure illustrates the overall design of our controller. To fully leverage the advantages of the LLM-enhanced RL based S-Surface controller, while achieving simulation and perception of extreme marine conditions to evaluate the disturbance rejection performance, we decompose the proposed framework into three core modules. 
           </p>
-          <video id="matting-video" autoplay controls muted loop playsinline height="80%">
-            <source src="./static/videos/2DDC_0.mp4"
-                    type="video/mp4">
-          </video>
+          <ul>
+            <li>
+              <b>The RL based S-Surface Controller Module</b> employs RL policies focusing on high-level task decision-making, and the S-Surface controller utilized to achieve precise 6-DoF control.
+            </li>
+            <li>
+              <b>The LLM-enhanced Iterative Joint Optimization Module</b> performs joint optimization of the RL reward function and controller parameters guided by domain-specific guidelines. It systematically analyzes environmental summaries, numerical computations, and multi-modal task feedback to enhance adaptation to dynamic marine environments. 
+            </li>
+            <li>
+              <b>The Simulation and Environment-Aware Module</b> executes physical ocean modeling with 6-DoF control dynamics for extreme scenario simulation, and fuses multisource sensor data for active disturbance mitigation.
+            </li>
+          </ul>
         </div>
       </div>
-    </div>
+
+
+      </div>
+      <div class="columns is-centered has-text-justified">
+        <div class="column is-four-fifths">
+          <p> <b>Figure👇:</b> The overall framework of our proposed controller, which comprises of three modules: (A) RL-based S-Surface Controller Module. (B) LLM-Enhanced Iterative Joint Optimization Module. (C) Environment-Aware & Simulation Module.</p>
+          <img src="./static/images/fig2.png"
+     class="architecture-image"
+     alt="architecture-image image."
+     style="width: 50%; display: block; margin: 0 auto;"/>
+          <p>‎</p>
+          </div></div>
+
+
+          <div class="columns is-centered has-text-centered">
+            <div class="column is-four-fifths">
+              <div class="content has-text-centered"><p> <b>Video👇:</b> 2D and 3D visualization of the extreme sea condition.</p></div>
+              </div></div>
+
+          <div class="columns is-centered has-text-centered">
+
+            <!-- Visual Effects. -->
+            <div class="column">
+              <div class="content">
+                
+                <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
+                  <source src="./static/videos/exp_1.mp4"
+                          type="video/mp4">
+                </video>
+                <p>
+                    Main View
+                  </p>
+              </div>
+            </div>
+            <!--/ Visual Effects. -->
+      
+            <!-- Matting. -->
+            <div class="column">
+              <div class="columns is-centered has-text-centered">
+                <div class="column content">
+    
+                  <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+                    <source src="./static/videos/exp_2.mp4"
+                            type="video/mp4">
+                  </video>
+                  <p>
+                    Top View
+                  </p>
+                </div>
+      
+              </div>
+            </div>
+    
+            <div class="column">
+                <div class="columns is-centered">
+                  <div class="column content has-text-centered">
+                    <p>‎</p>
+                    <img src="./static/images/exp_3.png"
+              class="architecture-image"
+              alt="architecture-image image."
+              style="width: 85%; display: block; margin: 0 auto;"/>
+                    <p>‎</p>
+                    <p>
+                      Side View
+                    </p>
+                  </div>
+                </div>
+              </div>
+          </div>
+    
     <!--/ Abstract. -->
-  </div>
+  
 </section>
 
 
 <section class="section" style="text-align: center;" >
   <div class="container is-max-desktop">
-  <h2 class="title is-3" style="text-align: center;">
-    Experimental Results
-  </h2>
+    <h1 class="title is-2" style="text-align: center;">
+      Experimental Results
+    </h1>
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-four-fifths">
+      
+      <div class="content has-text-justified">
+        <p >We validate the effectiveness of our proposed controller utilizing a REMUS 100 AUV, and we introduce two high-level tasks:</p>
+        <ul>
+          <li>
+            3D data collection task: Employing the proposed controller, a single or multiple AUVs operate together to search and collect data from sensor nodes (SNs) scattered randomly.
+          </li>
+          <li>
+            3D target tracking task: A single or multiple AUVs are utilized to follow a dynamic underwater target whose position is unpredictable.
+          </li>
+        </ul>
+      </div></div></div>
 
-  <div class="column">
-    <div class="content">
-      <h2 class="title is-3">Visual Effects</h2>
-      <p>
-        Using <i>nerfies</i> you can create fun visual effects. This Dolly zoom effect
-        would be impossible without nerfies since it would require going through a wall.
-      </p>
-      <video id="dollyzoom" autoplay controls muted loop playsinline height="10%">
-        <source src="./static/videos/exp_1.mp4"
-                type="video/mp4">
-      </video>
-    </div>
-  </div>
-  <!--/ Visual Effects. -->
+      <div class="columns is-centered has-text-justified">
+        
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">LLM optimization Performance</h2>
+        <div class="content has-text-justified">
+          <p >LLMs achieve flexible adjustments for joint optimization based on the bottleneck analysis, and terminate optimization when reaching system control limitations. 
+          </p>
 
-  <!-- Matting. -->
-  <div class="column">
-    <h2 class="title is-3">Matting</h2>
-    <div class="columns is-centered">
-      <div class="column content">
-        <p>
-          As a byproduct of our method, we can also solve the matting problem by ignoring
-          samples that fall outside of a bounding box during rendering.
-        </p>
-        <video id="matting-video" autoplay controls muted loop playsinline height="10%">
-          <source src="./static/videos/exp_2.mp4"
-                  type="video/mp4">
-        </video>
-      </div>
+          <p> <b>Video👇:</b> Parameters for yaw tracking controller and reward weights, along with 2D projections of AUV trajectories from the 3D data collection tasks during the LLM optimization phase.</p>
+        </div></div></div>
 
-    </div>
-  </div>
-  </div>
+        
 
+        <div class="columns is-centered has-text-centered">
+          
 
-
+          <!-- Visual Effects. -->
+          <div class="column">
+            <div class="content">
+              
+              <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
+                <source src="./static/videos/sum1.mp4"
+                        type="video/mp4">
+              </video>
+              <p>
+                  Main View
+                </p>
+            </div>
+          </div>
+          <!--/ Visual Effects. -->
+    
   
-  <img src="./static/images/fin5.png"
-       class="architecture-image"
-       alt="architecture-image image."
-       style="width: 50%; display: block; margin: 0 auto;"/>
-       <p>The reward critic can effectively detect various errors and
-        then rewrite reward components based on the description and
-        variables of the Env class. 
-       For each component, only one iteration is needed to obtain the correct feedback results.</p>
-       <br></br>
-  <img src="./static/images/fin1.png"
-       class="architecture-image"
-       alt="architecture-image image."
-       style="width: 45%; display: block; margin: 0 auto;"/>
-       <p>The reward critic can rectify elusive errors in reward components, but EUREKA-S fails to do so.</p>
-      <br></br>
-  <img src="./static/images/fin2.png"
-       class="architecture-image"
-       alt="architecture-image image."
-       style="width: 26%; display: block; margin: 0 auto;"/>
-       <p>Two groups of weights generated by the reward weight initializer achieve Pareto solutions,
-       therefore no further search is required, or only a more refined search may be necessary.</p>
-       <br></br>
-  <img src="./static/images/fin6.png"
-       class="architecture-image"
-       alt="architecture-image image."
-       style="width: 70%; display: block; margin: 0 auto;"/>
-       <p>In the 500x off experiment, the reward weight searcher quickly recognizes excessive energy consumption optimization and tries various adjustment. 
-        However, EUREKA-M increases weights in a highly random manner ranther than decreasing the penalty of energy consumption.</p>
-       <br></br>
-  <img src="./static/images/fin3.png"
-       class="architecture-image"
-       alt="architecture-image image."
-       style="width: 26%; display: block; margin: 0 auto;"/>
-       <p>This figure shows the maximum value of
-        w_service/w_ec in five weight groups during training,
-       with the best performance among the five repetitions. The reward weight searcher adopts step sizes more flexibly, compared to GPT-4o w/o TLA and EUREKA-M. </p>
-       <br></br>
-  <img src="./static/images/fin4.png"
-       class="architecture-image"
-       alt="architecture-image image."
-       style="width: 50%; display: block; margin: 0 auto;"/>
-       <p> This table displays the number of iterations required to meet
-        user demand.The experiments are performed 5 times,
-        and the mean values and standard deviations are reported. Finally, on average only 5.2 iterations are needed to meet user requirements.</p>
+
+        </div>
+
+        <div class="columns is-centered has-text-justified">
+          <div class="column is-four-fifths">
+            <p>‎</p>
+            <p> <b>Figure👇: </b>Performance results of the S-surface controller in tracking reference signals taken from a target tracking task, during the LLM optimization phase.
+            </p>
+            </div></div>
+
+      <img src="./static/images/fig4.png"
+           class="architecture-image"
+           alt="architecture-image image."
+           style="width: 50%; display: block; margin: 0 auto;"/>
+           <p>‎</p>
+
+      <div class="columns is-centered has-text-justified">
+    
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">LLM-enhanced S-Surface Performance</h2>
+          <div class="content has-text-justified">
+
+          </div></div></div>
+            <div class="columns is-centered has-text-justified">
+            <div class="column is-four-fifths">
+              <p> <b>Figure👇: </b>Comparative results of three controllers tracking reference signals taken from a target tracking task under extreme sea(ES) and very extreme sea(VES) conditions. When transitioning to VES conditions, the controllers exhibit progressive performance deterioration, with the PID controller showing worse flexibility and stability compared to the S-Surface controller. Additionally, the PVS suffers a complete loss of depth regulation capability.
+              </p>
+              </div></div>
+  
+        <img src="./static/images/fig5.png"
+             class="architecture-image"
+             alt="architecture-image image."
+             style="width: 70%; display: block; margin: 0 auto;"/>
+
+          <div class="columns is-centered has-text-justified">
+            <div class="column is-four-fifths">
+              <p>‎</p>
+              <p> <b>Table👇: </b>Performance metrics of different control methods evaluated during the data collection task under ES and VES conditions. Under the extreme sea condition, the S-Surface controller achieves performance close to the ideal setting, and under the very extreme sea condition, the S-Surface controller exhibits significantly lower performance degradation compared to PID.
+              </p>
+              </div></div>
+  
+        <img src="./static/images/table2.png"
+             class="architecture-image"
+             alt="architecture-image image."
+             style="width: 50%; display: block; margin: 0 auto;"/>
+             <p>‎</p>
+
+          <div class="columns is-centered has-text-justified">
+    
+            <div class="column is-four-fifths">
+              
+              <h2 class="title is-3">3D Visualization</h2>
+              <div class="content has-text-justified">
+                <p >The following videos visualize the 3D data collection and target tracking tasks performed by two AUVs. In the former case, the AUV must judiciously control its direction to efficiently serve sensor nodes due to its restricted tuning capability, while the latter requires more real-time control capabilities.</p>
+
+                <p> <b>Video👇: </b>3D visualizations of two AUVs performing the data collection task. The AUVs can plan optimal routes as much as possible, achieving performance close to ideal control conditions.
+                </p>
+              </div></div></div>
+    
+              
+
+          <div class="columns is-centered has-text-centered">
+
+            <!-- Visual Effects. -->
+            <div class="column">
+              <div class="content">
+                
+                <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
+                  <source src="./static/videos/sum2.mp4"
+                          type="video/mp4">
+                </video>
+              </div>
+            </div>
+            <!--/ Visual Effects. -->
+                </div>
+
+                <div class="columns is-centered has-text-justified">
+    
+                  <div class="column is-four-fifths">
+                      <p>‎</p>
+                      <p> <b>Video👇: </b>3D visualizations of two AUVs performing the target tracking task. The AUVs also demonstrate high maneuverability in response to target turns.
+                      </p>
+                    </div></div>
+
+          <div class="columns is-centered has-text-centered">
+
+            <!-- Visual Effects. -->
+            <div class="column">
+              <div class="content">
+                
+                <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
+                  <source src="./static/videos/sum3.mp4"
+                          type="video/mp4">
+                </video>
+              </div>
+            </div>
+            <!--/ Visual Effects. -->
+      
+
+          </div>
+          
+    
+
+
+
+       
       </div>
 </section>
 
@@ -256,8 +416,9 @@
     <!-- Examples. -->
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
+        
         <h3 class="title is-3"><span class="dnerf"></span>Supplementary files</h3>
-
+        <p><b>⚠ UNDER CONSTRUCTION!</b></p>
         <object data="static/images/supplementary_LLM.pdf" width="100%" height="768px" type="application/pdf"></object>
       </div>
     </div>
@@ -269,7 +430,7 @@
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
-    <pre><code>@article{xie2024llmrscontrol,
+    <pre><code>@article{xie2025AUVRScontrol,
       title={Never too Prim to Swim: An LLM-Enhanced RL-based Adaptive S-Surface Controller for AUVs under Extre Sea Conditions},
       author={Xie, Guanwen and Xu, Jingzehua and Ding, Yimian and Zhang, Zhi and Zhang, Shuai and Li, Yi},
       journal={arXiv preprint arXiv:2503.00527},
@@ -298,7 +459,7 @@
          href="https://arxiv.org/pdf/2503.00527.pdf">
         <i class="fas fa-file-pdf"></i>
       </a>
-      <a class="icon-link" href="https://github.com/360ZMEM/AUV-RSControl" class="external-link" disabled>
+      <a class="icon-link" href="https://github.com/360ZMEM/AUV-RSControl-Code" class="external-link" disabled>
         <i class="fab fa-github"></i>
       </a>
     </div>
